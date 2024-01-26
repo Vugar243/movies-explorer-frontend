@@ -1,0 +1,85 @@
+.movies-card {
+  display: grid;
+  grid-template-areas: 
+    "poster poster"
+    "title button"
+    "duration duration";
+  ;
+}
+.movies-card__poster {
+  grid-area: poster;
+  width: 270px;
+  height: 151px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.movies-card__title {
+  grid-area: title;
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 0;
+  margin-bottom: 0;
+  justify-self: start;
+}
+.movies-card__like-button {
+  grid-area: button;
+  padding: 0;
+  border: 0;
+  justify-self: end;
+  background-image: url("../../images/like.svg");
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.movies-card__dislike-button {
+  grid-area: button;
+  padding: 0;
+  border: 0;
+  justify-self: end;
+  background-image: url("../../images/dislike.svg");
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.movies-card__remove-button {
+  grid-area: button;
+  padding: 0;
+  border: 0;
+  justify-self: end;
+  background-image: url("../../images/remove.svg");
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.movies-card__duration {
+  grid-area: duration;
+  color: #A0A0A0;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-top: 1px solid #E8E8E8;
+  margin-bottom: 0;
+  padding-top: 6px;
+  margin-top: 25px;
+}
+@media screen and (max-width: 768px) {
+  .movies-card__poster {
+    width: 339px;
+    height: 190px;
+  }
+}
+@media screen and (max-width: 493px) {
+  .movies-card__poster {
+    width: 300px;
+    height: 168px;
+  }
+  .movies-card__title {
+    font-size: 13px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,102 @@
+.footer {
+  padding: 0 70px;
+  display: grid;
+  grid-template-areas: 
+    "title title"
+    "copyright list";
+    background-color: #FFF;
+}
+.footer__title {
+  grid-area: title;
+  color: #A0A0A0;
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 70px;
+  border-bottom: 1px solid rgba(232, 232, 232, 1);
+  justify-self: stretch;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+.footer__copyright {
+  grid-area: copyright;
+  color: #000;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.footer__list {
+  grid-area: list;
+  justify-self: end;
+  display: flex;
+  padding-left: 0;
+  margin-top: 0;
+  list-style: none;
+  margin-bottom: 0px;
+}
+.footer__item:last-child {
+  margin-left: 20px;
+}
+.footer__item-link {
+  text-decoration: none;
+  color: #000;
+  text-align: right;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.footer__item-link:hover {
+  opacity: 0.7;
+}
+@media screen and (max-width: 768px) {
+  .footer {
+    padding: 0 30px;
+  }
+  .footer__title {
+    margin-top: 79px;
+  }
+}
+@media screen and (max-width:320px) {
+  .footer {
+    padding: 0 10px;
+    grid-template-areas: 
+      "title title"
+      "list list"
+      "copyright copyright";
+  }
+  .footer__title {
+    font-size: 12px;
+    padding-bottom: 21px;
+    margin-bottom: 26px;
+  }
+  .footer__copyright {
+    text-align: center;
+    font-size: 12px;
+  }
+  .footer__list {
+    justify-self: center;
+    text-align: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+  }
+  .footer__item {
+    margin-bottom: 12px;
+    height: 15px;
+  }
+  .footer__item:last-child {
+    margin-bottom: 0;
+    margin-left: 0;
+  }
+  .footer__item-link {
+    font-size: 12px;
+  }
+}

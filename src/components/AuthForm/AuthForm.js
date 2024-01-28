@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 const AuthForm = ({ title, submitButtonText, onFormSubmit, link, inputs, linkText, text, navigate, submitButtonClass }) => {
   return (
     <div className="auth-form">
-      <div className="auth-form__logo" onClick={() => navigate('/')}></div>
-      <h2 className="auth-form__title">{title}</h2>
+      <div className="auth-form__logo" onClick={() => navigate('/')} role="button"></div>
+      <h1 className="auth-form__title">{title}</h1>
       <form className="auth-form__form" onSubmit={onFormSubmit}>
         {inputs.map((input, index) => (
           <div key={index} className="auth-form__input-wrapper">
@@ -19,6 +19,8 @@ const AuthForm = ({ title, submitButtonText, onFormSubmit, link, inputs, linkTex
               type={input.type}
               placeholder={input.placeholder}
               required
+              minlength={input.minlength}
+              maxlength={input.maxlength}
             />
           </div>
         ))}

@@ -5,6 +5,7 @@
     "title title"
     "copyright list";
     background-color: #FFF;
+    margin-top: auto;
 }
 .footer__title {
   grid-area: title;

@@ -22,6 +22,9 @@
   line-height: normal;
   margin-top: 70px;
 }
+.search-form__input:focus {
+  border-bottom: 1px solid #3456F3;; /* Изменяем стиль при фокусе */
+}
 .search-form__button {
   grid-area: button;
   border-radius: 48px;
@@ -82,6 +85,9 @@
   height: 20px;
   margin-right: 14px;
 }
+.search-form__label:hover {
+  opacity: 0.8;
+}
 
 .search-form__checkbox:checked + .search-form__custom-checkbox {
   background-image: url("../../images/smalltumb.svg");
@@ -109,9 +115,6 @@
   .search-form__divider {
     margin-bottom: 29px;
   }
-  .movies-button-load-more {
-    margin-bottom: 80px;
-  }
 }
 @media screen and (max-width: 552px) {
   .search-form {
@@ -138,9 +141,6 @@
   .search-form__divider {
     margin-top: 9px;
     margin-bottom: 40px;
-  }
-  .movies-button-load-more {
-    margin-bottom: 80px;
   }
 }
 

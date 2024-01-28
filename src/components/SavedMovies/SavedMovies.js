@@ -14,8 +14,10 @@ const SavedMovies = ({isAuthenticated, navigate, handleNavigationButtonClick, lo
   return (
     <>
       <Header isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} />
-      <SearchForm />
-      <MoviesCardList movies={dummyMovies} location={location} />
+      <main>
+        <SearchForm />
+        <MoviesCardList movies={dummyMovies} location={location} />
+      </main>
       <Footer />
       <Navigation isNavigationPopupOpen={isNavigationPopupOpen}  location={location} closeAllPopups={closeAllPopups} />
     </>

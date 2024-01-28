@@ -68,8 +68,6 @@
   grid-area: image;
   width: 270px;
   height: 327px;
-  background-image: url("../../images/aboutmeimage.png");
-  background-size: cover;
   border-radius: 10px;
   justify-self: end;
 }
@@ -195,6 +193,7 @@
     display: flex;
     flex-direction: column;
     padding: 0 14px;
+    align-items: center;
   }
   
   .about-me__title {
@@ -260,5 +259,27 @@
   .about-me__link-icon {
     font-size: 18px;
     line-height: 28px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .about-me__title {
+    align-self: flex-start;
+    width: 100%;
+  }
+  .about-me__subtitle {
+    align-self: flex-start;
+  }
+  .about-me__description {
+    align-self: flex-start;
+  }
+  .about-me__link {
+    align-self: flex-start;
+  }
+  .about-me__portfolio-title {
+    align-self: flex-start;
+  }
+  .about-me__list {
+    align-self: flex-start;
+    width: 100%;
   }
 }

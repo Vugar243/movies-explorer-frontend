@@ -34,6 +34,10 @@
   height: 24px;
   cursor: pointer;
 }
+.movies-card__like-button:hover {
+  opacity: 0.8;
+}
+
 .movies-card__dislike-button {
   grid-area: button;
   padding: 0;
@@ -44,6 +48,9 @@
   height: 24px;
   cursor: pointer;
 }
+.movies-card__dislike-button:hover {
+  opacity: 0.8;
+}
 .movies-card__remove-button {
   grid-area: button;
   padding: 0;
@@ -53,6 +60,9 @@
   width: 24px;
   height: 24px;
   cursor: pointer;
+}
+.movies-card__remove-button:hover {
+  opacity: 0.8;
 }
 .movies-card__duration {
   grid-area: duration;

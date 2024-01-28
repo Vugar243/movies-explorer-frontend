@@ -17,3 +17,16 @@
   margin: 60px auto 88px;
   cursor: pointer;
 }
+.movies-button-load-more:hover {
+  opacity: 0.8;
+}
+@media screen and (max-width: 768px) {
+  .movies-button-load-more {
+    margin-bottom: 80px;
+  }
+}
+@media screen and (max-width: 552px) {
+  .movies-button-load-more {
+    width: 240px;
+  }
+}

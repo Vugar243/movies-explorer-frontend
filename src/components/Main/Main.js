@@ -12,7 +12,7 @@ function Main({ isAuthenticated, navigate, handleNavigationButtonClick, location
   return (
     <>
       <Header isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location}/>
-      <main className="content">
+      <main>
         <Promo />
         <AboutProject />
         <Techs />

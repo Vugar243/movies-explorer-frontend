@@ -16,9 +16,11 @@ const Movies = ({isAuthenticated, navigate, handleNavigationButtonClick, locatio
   return (
     <>
       <Header isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location}/>
-      <SearchForm />
-      {loading ? <Preloader /> : <MoviesCardList movies={dummyMovies} location={location} />}
-      <button className="movies-button-load-more">Ещё</button>
+      <main> 
+        <SearchForm />
+        {loading ? <Preloader /> : <MoviesCardList movies={dummyMovies} location={location} />}
+        <button type="button" className="movies-button-load-more">Ещё</button>
+      </main>
       <Footer />
       <Navigation isNavigationPopupOpen={isNavigationPopupOpen}  location={location} closeAllPopups={closeAllPopups} />
     </>

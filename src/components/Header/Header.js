@@ -23,7 +23,7 @@ function Header({ isAuthenticated, navigate, handleNavigationButtonClick, locati
   <header className={`header ${isAuthenticated ? 'header_auth' : ''}`}>
     <div className="header__logo" onClick={() => navigate('/')}></div>
     <Navbar navigationItems={navigationItems} isAuthenticated={isAuthenticated} location={location}/> 
-    {isAuthenticated && <button  className="header__profile" type="button" onClick={handleProfileButtonClick}></button>}
+    {isAuthenticated && <button  className="header__profile" type="button" onClick={handleProfileButtonClick}>Аккаунт</button>}
   </header>
   );
 }

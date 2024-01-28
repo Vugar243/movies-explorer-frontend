@@ -22,6 +22,7 @@ const SearchForm = ({ onSearch, onCheckboxChange }) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="search-form__input"
+        required
       />
       <div className="search-form__divider"></div>
       <label className="search-form__label">
@@ -34,7 +35,7 @@ const SearchForm = ({ onSearch, onCheckboxChange }) => {
         <span className="search-form__custom-checkbox"></span>
         Короткометражки
       </label>
-      <button type="button" onClick={handleSearch} className="search-form__button">Найти</button>
+      <button type="submit" onClick={handleSearch} className="search-form__button">Найти</button>
     </form>
   );
 };

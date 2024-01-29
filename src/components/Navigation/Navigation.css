@@ -1,0 +1,109 @@
+.popup {
+  background-color: rgba(0, 0, 0, 0.3);
+  font-family: Inter, Arial, sans-serif;
+  left: 100%; /* Изначально установите left на 100%, чтобы позиционировать его за пределами видимой части */
+  opacity: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  transition: left 1s ease-out, opacity 1s ease-out; /* Добавьте left в свойство transition */
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.open-popup {
+  opacity: 1;
+  z-index: 1;
+  left: 0; /* Установите left на 0, когда попап открыт, чтобы сделать выезжание справа налево */
+}
+.navigation {
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  background-color: #FFF;
+}
+.navigation__list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  list-style-type: none;
+  align-items: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  flex-grow: 1;
+}
+.navigation__item {
+  margin-bottom: 28px;
+}
+.navigation__item:last-child {
+  margin-bottom: 90px;
+  width: 100px;
+  height: 32px;
+  background-size: cover;
+  align-self: center;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 1);
+  background-image: url("../../images/headerprofile_auth.svg");
+  border-radius: 40px;
+  display: flex;
+  margin-top: auto;
+}
+.navigation__close-button {
+  background-image: url("../../images/close.svg");
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  align-self: flex-end;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+  margin-right: 22.44px;
+  margin-top: 22.44px;
+  margin-bottom: 106px;
+}
+.navigation__close-button:hover {
+  opacity: 0.8;
+}
+.navigation__link {
+  color: #000;
+  text-align: center;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+  margin-bottom: 0;
+  width: 100px;
+  height: 32px;
+}
+.navigation__link:hover {
+  opacity: 0.7;
+}
+.navigation__link_active {
+  border-bottom: solid 2px rgba(0, 0, 0, 1);
+}
+@media screen and (max-width: 532px) {
+  .navigation {
+    width: 320px;
+  }
+  .navigation__close-button {
+    margin-right: 13.44px;
+    margin-top: 13.44px;
+    margin-bottom: 100px;
+  }
+  .navigation__item {
+    margin-bottom: 24px;
+  }
+  .navigation__item:last-child {
+    margin-bottom: 46px;
+  }
+  .navigation__link_active {
+    padding-bottom: 7px;
+}
+}

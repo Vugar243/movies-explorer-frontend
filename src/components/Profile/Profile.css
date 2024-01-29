@@ -1,0 +1,135 @@
+.profile-form {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 410px;
+}
+.profile-form__title {
+  margin-top: 74px;
+  margin-bottom: 123px;
+  color: #000;
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.profile-form__input-wrapper {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #E8E8E8;
+  padding-bottom: 16px;
+  margin-bottom: 17px;
+}
+.profile-form__input:focus {
+  border-bottom: 1px solid #3456F3;; /* Изменяем стиль при фокусе */
+}
+.profile-form__input-wrapper:last-of-type {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+
+}
+.profile-form__label {
+  color: #000;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.profile-form__input {
+  color: #000;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: end;
+  outline: none;
+  padding: 0;
+  border: 0;
+}
+.profile-form__edit-button {
+  margin-top: 220px;
+  margin-bottom: 16px;
+  color: #000;
+  text-align: center;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0;
+  border: 0;
+  background-color: #fff;
+  cursor: pointer;
+}
+.profile-form__exit-button {
+  color: #FF3055;
+  text-align: center;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 0;
+  border: 0;
+  margin-bottom: 70px;
+  background-color: #fff;
+  cursor: pointer;
+}
+.profile-form__save-button {
+  margin-top: 223px;
+  margin-bottom: 50px;
+  border-radius: 3px;
+  background-color: #3456F3;
+  height: 45px;
+  color: #FFF;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+.profile-form__save-button:hover {
+  opacity: 0.8;
+}
+.profile-form__edit-button:hover {
+  opacity: 0.8;
+}
+.profile-form__exit-button:hover {
+  opacity: 0.8;
+}
+
+
+
+
+@media screen and (max-width: 768px){
+  .profile-form__title {
+    margin-top: 236px;
+    margin-bottom: 96px;
+  }
+  .profile-form__edit-button {
+    margin-top: 210px;
+  }
+  .profile-form__exit-button {
+    margin-bottom: 269px;
+  }
+}
+@media screen and (max-width: 420px){
+  .profile-form {
+    width: 260px;
+}
+  .profile-form__title {
+    margin-top: 70px;
+    margin-bottom: 80px;
+  }
+  .profile-form__edit-button {
+    margin-top: 379px;
+    font-size: 12px;
+  }
+  .profile-form__exit-button {
+    margin-bottom: 40px;
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,161 @@
+.about-project {
+  background-color: #FFF;
+  padding: 0 70px;
+}
+.about-project__title {
+  color: #000;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.88px;
+  padding: 110px 0 23px ;
+  margin: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+}
+.about-project__list {
+  display: flex;
+  padding: 0;
+  margin: 70px 0 110px;
+}
+.about-project__info, .about-project__stage {
+  display: flex;
+  flex-direction: column;
+}
+.about-project__info-title, .about-project__stage-title {
+  margin: 0 0 26px;
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.8px;
+}
+.about-project__info-text, .about-project__stage-text {
+  margin: 0;
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+.about-project__info {
+  margin-right: 52px;
+}
+.about-project__timeline {
+  display: flex;
+}
+.about-project__timeline-item {
+  color: #000;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 228px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  background-color: #2BE080;
+}
+.about-project__timeline-item:last-child {
+  background-color: #F2F2F2;
+  width: 912px;
+}
+.about-project__skills {
+  display: flex;
+}
+.about-project__skill {
+  color: #A0A0A0;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 228px;
+  margin: 14px 0 110px;
+}
+.about-project__skill:last-child {
+  width: 912px;
+}
+@media screen and (max-width: 768px){
+  .about-project {
+    padding: 0 50px;
+  }
+  .about-project__info {
+    margin-right: 37px;
+  }
+  .about-project__info-text, .about-project__stage-text {
+    font-size: 12px;
+    line-height: 18px
+  }
+  .about-project__info-title, .about-project__stage-title {
+    margin-bottom: 22px;
+  }
+  .about-project__title {
+    padding: 90px 0 23px ;
+  }
+  .about-project__list {
+    margin: 70px 0 93px;
+  }
+  .about-project__timeline-item {
+    width: 140px;
+  }
+  .about-project__timeline-item:last-child {
+    width: 528px;
+  }
+  .about-project__skill {
+    width: 140px;
+    margin-bottom: 90px;
+  }
+  .about-project__skill:last-child {
+    width: 528px;
+  }
+}
+@media screen and (max-width: 382px){
+  .about-project {
+    padding: 0 18px;
+  }
+  .about-project__info {
+    margin-right: 0;
+  }
+  .about-project__info-text, .about-project__stage-text {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 56px;
+  }
+  .about-project__info-title, .about-project__stage-title {
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+  .about-project__title {
+    padding: 70px 0 28px;
+    font-size: 18px;
+  }
+  .about-project__list {
+    margin: 60px 0 4px;
+    flex-direction: column;
+  }
+  .about-project__timeline-item {
+    width: 100px;
+    height: 35px;
+    font-size: 11px;
+  }
+  .about-project__timeline-item:last-child {
+    width: 184px;
+  }
+  .about-project__skill {
+    width: 100px;
+    margin-bottom: 90px;
+    font-size: 11px;
+    line-height: normal;
+    margin: 10px 0 69px;
+  }
+  .about-project__skill:last-child {
+    width: 184px;
+  }
+}

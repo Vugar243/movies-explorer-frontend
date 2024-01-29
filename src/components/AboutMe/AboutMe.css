@@ -141,6 +141,8 @@
   }
   .about-me__title {
     margin-top: 90px;
+    align-self: flex-start;
+    width: 100%;
   }
   .about-me__subtitle {
     font-size: 40px;

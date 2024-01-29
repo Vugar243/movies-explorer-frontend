@@ -66,7 +66,7 @@ const Profile = ({ navigate, isAuthenticated, handleNavigationButtonClick, locat
           ) : (
             <>
               <button type="button" className="profile-form__edit-button" onClick={handleEditClick}>Редактировать{' '}</button>
-              <button type="button" className="profile-form__exit-button">Выйти из аккаунта</button>
+              <button type="button" className="profile-form__exit-button" onClick={() => navigate('/')}>Выйти из аккаунта</button>
             </>
           )}
         </form>

@@ -5,6 +5,9 @@
   min-height: 74px;
   padding: 0 70px;
 }
+.header_auth {
+  background-color: #FFF;
+}
 .header__logo {
   background-image: url("../../images/logo/logo.svg");
   width: 38px;
@@ -55,9 +58,7 @@
 }
 
 
-.header_auth {
-  background-color: #FFF;
-}
+
 
 
 @media screen and (max-width: 768px){

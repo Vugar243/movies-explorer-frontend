@@ -17,6 +17,17 @@
   margin: 60px auto 88px;
   cursor: pointer;
 }
+.not-found-message {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+.error {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+  color: red;
+}
 .movies-button-load-more:hover {
   opacity: 0.8;
 }

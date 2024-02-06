@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-const MoviesCardList = ({ movies, location }) => {
+const MoviesCardList = ({ movies, location, saveMovies, setSaveMovies,}) => {
   return (
     <section className="section-movies">
       <ul className="movies-card-list">
         {movies.map((movie) => (
-          <MoviesCard key={movie.id} movie={movie} location={location} />
+          <MoviesCard saveMovies={saveMovies} setSaveMovies={setSaveMovies} key={movie.id} movie={movie} location={location} />
         ))}
       </ul>
     </section>

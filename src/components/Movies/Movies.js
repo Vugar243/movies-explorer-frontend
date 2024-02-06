@@ -6,21 +6,17 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Navigation from '../Navigation/Navigation';
-import moviesApi from '../utils/MoviesApi';
+import { handleSearchMovies } from '../utils/moviesApiUtils';
+import mainApi from '../utils/MainApi';
 
-const Movies = ({ isAuthenticated, navigate, handleNavigationButtonClick, location, isNavigationPopupOpen, closeAllPopups }) => {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [shortMoviesOnly, setShortMoviesOnly] = useState(false);
+const Movies = ({ shortMoviesOnly, setShortMoviesOnly, error, setError, searchQuery, setSearchQuery, filteredMovies, setFilteredMovies, loading, setLoading, isAuthenticated, navigate, handleNavigationButtonClick, location, isNavigationPopupOpen, closeAllPopups }) => {
   const [cardsPerRow, setCardsPerRow] = useState(4);
   const [visibleCards, setVisibleCards] = useState(cardsPerRow);
-  const [loadMoreCards, setLoadMoreCards] = useState(2);
-  const [error, setError] = useState(false);
-
+  const [loadMoreCards, setLoadMoreCards] = useState(2);  
+  const [saveMovies, setSaveMovies] = useState([]);
   useEffect(() => {
     // Fetch initial movies when the component mounts
+
     const storedSearchQuery = localStorage.getItem('searchQuery');
     const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
     const storedMovies = JSON.parse(localStorage.getItem('movies'));
@@ -28,21 +24,36 @@ const Movies = ({ isAuthenticated, navigate, handleNavigationButtonClick, locati
     if (storedSearchQuery || storedShortMoviesOnly || storedMovies) {
       setSearchQuery(storedSearchQuery);
       setShortMoviesOnly(storedShortMoviesOnly);
-      setMovies(storedMovies);
       setFilteredMovies(storedMovies);
     }
 
-    // Добавлен слушатель событий resize для отслеживания изменения размера экрана
-    const handleResize = () => {
+  // Добавлен слушатель событий resize для отслеживания изменения размера экрана
+  const handleResize = () => {
+    // Установка таймера для вызова функции через 300 миллисекунд после окончания изменений размера
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
       updateVisibleCards();
-    };
+    }, 800);
+  };
 
-    window.addEventListener('resize', handleResize);
+  let resizeTimer; // Переменная для хранения таймера
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+  window.addEventListener('resize', handleResize);
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
   }, []);
+  useEffect(() => {
+    mainApi.getInitialMovies()
+      .then((data) => {
+        setSaveMovies(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching initial movies:', error);
+      });
+  }, []);
+  
 
   // Обновление количества видимых карточек в зависимости от ширины экрана
   const updateVisibleCards = () => {
@@ -65,47 +76,27 @@ const Movies = ({ isAuthenticated, navigate, handleNavigationButtonClick, locati
   useEffect(() => {
     updateVisibleCards();
   }, [cardsPerRow]);
-
-   const handleSearch = () => {
-    setLoading(true);
-    const InitialCards = () => {
-    moviesApi.getInitialCards()
-      .then((data) => {
-        setMovies(data);
-        setError(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching initial movies:', error);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-    };
-
-
-    
-    const filtered = movies.filter((movie) => {
-      const titleIncludesQuery = movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) || movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase());
-      const isShortMovie = shortMoviesOnly ? movie.duration <= 40 : true;
-
-      return titleIncludesQuery && isShortMovie;
-    });
-    InitialCards();
-    setFilteredMovies(filtered);
-
-
-    // Save search results to localStorage
-    localStorage.setItem('searchQuery', searchQuery);
-    localStorage.setItem('shortMoviesOnly', shortMoviesOnly);
-    localStorage.setItem('movies', JSON.stringify(filtered));
-  };
-
   const handleLoadMore = () => {
     setVisibleCards((prevVisibleCards) => prevVisibleCards + loadMoreCards);
   };
+  const saveLocalStorage = (filtered) => {
+    localStorage.setItem('searchQuery', searchQuery);
+    localStorage.setItem('shortMoviesOnly', shortMoviesOnly);
+    localStorage.setItem('movies', JSON.stringify(filtered));
+  }
+
+  const handleSearch = async () => {
+    await handleSearchMovies(saveLocalStorage, searchQuery, shortMoviesOnly, setLoading, setError, setFilteredMovies);
+  };
+
   useEffect(() => {
-    handleSearch() 
+    // Получение сохраненного значения из localStorage
+    const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
+  
+    // Сравнение текущего значения с сохраненным
+    if (shortMoviesOnly !== storedShortMoviesOnly) {
+      handleSearch();
+    }
   }, [shortMoviesOnly]);
 
   return (
@@ -136,7 +127,7 @@ const Movies = ({ isAuthenticated, navigate, handleNavigationButtonClick, locati
         {loading ? (
           <Preloader />
         ) : (
-          <MoviesCardList movies={filteredMovies.slice(0, visibleCards)} location={location} />
+          <MoviesCardList saveMovies={saveMovies} setSaveMovies={setSaveMovies} movies={filteredMovies.slice(0, visibleCards)} location={location} />
         )}
         {error ? (
           <p className="error">Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз</p>

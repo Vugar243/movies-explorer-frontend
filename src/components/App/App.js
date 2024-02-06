@@ -17,6 +17,16 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isNavigationPopupOpen, setIsNavigationPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false); // Состояние для режима редактирования
+  const [loading, setLoading] = useState(false);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [error, setError] = useState(false);
+  const [shortMoviesOnly, setShortMoviesOnly] = useState(() => {
+    // Здесь мы получаем сохраненное значение из localStorage
+    const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
+    // Возвращаем это значение как начальное значение
+    return storedShortMoviesOnly;
+  }); 
   const location = useLocation();
 
   const handleNavigationButtonClick = () => {
@@ -110,7 +120,7 @@ function App() {
           <Route path="/signup" element={<Register navigate={navigate} setCurrentUser={setCurrentUser} handleRegister={handleRegister} />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/" element={<Main isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} isNavigationPopupOpen={isNavigationPopupOpen} closeAllPopups={closeAllPopups}/>} />
-          <Route path="/movies" element={<Movies isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} isNavigationPopupOpen={isNavigationPopupOpen} closeAllPopups={closeAllPopups}/>} />
+          <Route path="/movies" element={<Movies shortMoviesOnly={shortMoviesOnly} setShortMoviesOnly={setShortMoviesOnly} error={error} setError={setError} searchQuery={searchQuery} setSearchQuery={setSearchQuery} filteredMovies={filteredMovies} setFilteredMovies={setFilteredMovies} loading={loading} setLoading={setLoading} isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} isNavigationPopupOpen={isNavigationPopupOpen} closeAllPopups={closeAllPopups}/>} />
           <Route path="/saved-movies" element={<SavedMovies isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} isNavigationPopupOpen={isNavigationPopupOpen} closeAllPopups={closeAllPopups}/>} />
           <Route path="/profile" element={<Profile setIsAuthenticated={setIsAuthenticated} navigate={navigate} isAuthenticated={isAuthenticated} handleNavigationButtonClick={handleNavigationButtonClick} location={location} isNavigationPopupOpen={isNavigationPopupOpen} closeAllPopups={closeAllPopups} setCurrentUser={setCurrentUser} handleUpdateUser={handleUpdateUser} isEditing={isEditing} setIsEditing={setIsEditing}/>} />
         </Routes>

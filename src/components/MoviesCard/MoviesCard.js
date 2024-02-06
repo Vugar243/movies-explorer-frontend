@@ -1,30 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MoviesCard.css';
 import mainApi from '../utils/MainApi';
 
-const MoviesCard = ({ movie, location }) => {
+const MoviesCard = ({ movie, location, saveMovies, setSaveMovies }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const handleLikeDislikeClick = () => {
-    // Инвертируем состояние лайка
-    setIsLiked(!isLiked);
+  useEffect(() => {
+    const movieInSaved = saveMovies.find(savedMovie => savedMovie.movieId === movie.id);
+    setIsLiked(!!movieInSaved);
+  }, [saveMovies, movie.id]);
 
-    // Отправляем запрос на добавление/удаление фильма в избранное
+  const handleLikeDislikeClick = () => {
     if (!isLiked) {
-      // Если фильм не лайкнут, отправляем запрос на добавление
-      mainApi.addMovie(movie)
-      console.log(movie)
+      // Отправляем запрос на добавление фильма в избранное
+      mainApi.addMovielike({ movie })
         .then((data) => {
-          console.log('Фильм добавлен в избранное:', data);
+          setSaveMovies([...saveMovies, data]); // Обновляем saveMovies после успешного добавления
+          setIsLiked(true);
         })
         .catch((error) => {
           console.error('Ошибка при добавлении фильма в избранное:', error);
         });
     } else {
-      // Если фильм уже лайкнут, отправляем запрос на удаление
-      // Тут нужно реализовать метод в mainApi для удаления фильма из избранного
-      // mainApi.removeMovie(movieId) или подобный
+      const movieInSaved = saveMovies.find(savedMovie => savedMovie.movieId === movie.id);
+      if (movieInSaved) {
+        // Отправляем запрос на удаление фильма из избранного по _id
+        mainApi.deleteMovielike(movieInSaved._id)
+          .then(() => {
+            setSaveMovies(saveMovies.filter(savedMovie => savedMovie.movieId !== movie.id)); // Обновляем saveMovies после успешного удаления
+            setIsLiked(false);
+          })
+          .catch((error) => {
+            console.error('Ошибка при удалении фильма из избранного:', error);
+          });
+      }
     }
   };
+  
   const formatDuration = (minutes) => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;

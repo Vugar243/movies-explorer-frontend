@@ -63,7 +63,7 @@ class MainApi {
   }
 
  
-  addMovie({ movie }) {
+  addMovielike({ movie }) {
     const token = localStorage.getItem('jwt');
     return fetch(`${this.baseUrl}/movies`, {
       method: 'POST',
@@ -72,31 +72,69 @@ class MainApi {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        movie
+        country: movie.country,
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: `https://api.nomoreparties.co${movie.image.url}`, // Полный путь к изображению
+        trailerLink: movie.trailerLink,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+        thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`, // Полный путь к миниатюре
+        movieId: movie.id
       })
     })
       .then(this._checkResponse)
   }
-  deleteCard(cardId) {
+
+
+
+
+
+
+
+
+
+
+
+
+  getInitialMovies() {
     const token = localStorage.getItem('jwt');
-    return fetch(`${this.baseUrl}/cards/${cardId}`, {
+    return fetch(`${this.baseUrl}/movies`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${token}`
+      },
+    })
+      .then(this._checkResponse)
+  }
+
+
+
+
+
+
+
+
+
+
+  deleteMovielike(cardId) {
+    const token = localStorage.getItem('jwt');
+    return fetch(`${this.baseUrl}/movies/${cardId}`, {
       method: 'DELETE',
       headers: {
-        authorization: `Bearer ${token}`
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
     })
       .then(this._checkResponse)
   }
-  likeCard(cardId) {
-    const token = localStorage.getItem('jwt');
-    return fetch(`${this.baseUrl}/cards/${cardId}/likes/`, {
-      method: 'PUT',
-      headers: {
-        authorization: `Bearer ${token}`
-      },
-    })
-      .then(this._checkResponse)
-  }
+
+
+
+
+
 
   dislikeCard(cardId) {
     const token = localStorage.getItem('jwt');
@@ -111,6 +149,7 @@ class MainApi {
 }
 const mainApi = new MainApi({
   baseUrl: 'https://api.vugar243.nomoredomainsmonster.ru'
+  /*baseUrl: 'http://localhost:3002'*/
 });
 export default mainApi;
 

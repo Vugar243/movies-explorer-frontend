@@ -78,6 +78,6 @@ https://www.figma.com/file/6FMWkB94wE7KTkcCgUXtnC/%D0%94%D0%B8%D0%BF%D0%BB%D0%BE
 Ссылки на проект
 IP-адрес 158.160.134.89
 
-Frontend https://vugar243.nomoredomainsmonster.ru
+Frontend https://vugar243.nomoredomainswork.ru
 
 Backend https://api.vugar243.nomoredomainsmonster.ru

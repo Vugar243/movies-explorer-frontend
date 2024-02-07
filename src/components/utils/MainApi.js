@@ -149,7 +149,6 @@ class MainApi {
 }
 const mainApi = new MainApi({
   baseUrl: 'https://api.vugar243.nomoredomainsmonster.ru'
-  /*baseUrl: 'http://localhost:3002'*/
 });
 export default mainApi;
 

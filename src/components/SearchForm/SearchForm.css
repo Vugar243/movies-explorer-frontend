@@ -22,6 +22,16 @@
   line-height: normal;
   margin-top: 70px;
 }
+.search-form__input-error {
+  color: red;
+  font-feature-settings: 'clig' off, 'liga' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  position: absolute;
+  top: 196px;
+}
 .search-form__input:focus {
   border-bottom: 1px solid #3456F3;; /* Изменяем стиль при фокусе */
 }
@@ -115,6 +125,9 @@
   .search-form__divider {
     margin-bottom: 29px;
   }
+  .search-form__input-error {
+    top: 206px;
+}
 }
 @media screen and (max-width: 552px) {
   .search-form {

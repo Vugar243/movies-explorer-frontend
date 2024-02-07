@@ -8,12 +8,20 @@ import Footer from '../Footer/Footer';
 import Navigation from '../Navigation/Navigation';
 import { handleSearchMovies } from '../utils/moviesApiUtils';
 import mainApi from '../utils/MainApi';
+import ValidationInput from '../ValidationInput/ValidationInput';
 
-const Movies = ({ shortMoviesOnly, setShortMoviesOnly, error, setError, searchQuery, setSearchQuery, filteredMovies, setFilteredMovies, loading, setLoading, isAuthenticated, navigate, handleNavigationButtonClick, location, isNavigationPopupOpen, closeAllPopups }) => {
+const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoading, isAuthenticated, navigate, handleNavigationButtonClick, location, isNavigationPopupOpen, closeAllPopups }) => {
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [shortMoviesOnly, setShortMoviesOnly] = useState(() => {
+    // Здесь мы получаем сохраненное значение из localStorage
+    const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
+    // Возвращаем это значение как начальное значение
+    return storedShortMoviesOnly;
+  }); 
   const [cardsPerRow, setCardsPerRow] = useState(4);
   const [visibleCards, setVisibleCards] = useState(cardsPerRow);
   const [loadMoreCards, setLoadMoreCards] = useState(2);  
-  const [saveMovies, setSaveMovies] = useState([]);
   useEffect(() => {
     // Fetch initial movies when the component mounts
 
@@ -44,16 +52,6 @@ const Movies = ({ shortMoviesOnly, setShortMoviesOnly, error, setError, searchQu
     window.removeEventListener('resize', handleResize);
   };
   }, []);
-  useEffect(() => {
-    mainApi.getInitialMovies()
-      .then((data) => {
-        setSaveMovies(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching initial movies:', error);
-      });
-  }, []);
-  
 
   // Обновление количества видимых карточек в зависимости от ширины экрана
   const updateVisibleCards = () => {
@@ -99,18 +97,26 @@ const Movies = ({ shortMoviesOnly, setShortMoviesOnly, error, setError, searchQu
     }
   }, [shortMoviesOnly]);
 
+
   return (
     <>
       <Header isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} />
       <main>
         <SearchForm onSearch={handleSearch}>
-          <input
+        <ValidationInput
+            id="searchQuery"
+            label="Фильм"
             type="text"
             placeholder="Фильм"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-form__input"
+            onChange={(value, error) => {
+              setSearchQuery(value);
+            }}
+            cssClass="search-form__input"
             required
+            minLength="2"
+            error=""
+            cssClassError="search-form__input-error"
           />
           <div className="search-form__divider"></div>
           <label className="search-form__label">

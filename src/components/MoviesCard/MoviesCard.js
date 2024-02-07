@@ -35,6 +35,16 @@ const MoviesCard = ({ movie, location, saveMovies, setSaveMovies }) => {
       }
     }
   };
+  const handleRemoveFromSaved = () => {
+    mainApi.deleteMovielike(movie._id)
+      .then((deletedMovie) => {
+        setSaveMovies(saveMovies.filter(savedMovie => savedMovie.movieId !== deletedMovie.movieId)); // Обновляем saveMovies после успешного удаления
+      })
+      .catch((error) => {
+        console.error('Ошибка при удалении фильма из избранного:', error);
+      });
+  }
+  
   
   const formatDuration = (minutes) => {
   const hours = Math.floor(minutes / 60);
@@ -49,14 +59,14 @@ const MoviesCard = ({ movie, location, saveMovies, setSaveMovies }) => {
   return (
     <li className="movies-card">
       <a className="movies-card__link" href={movie.trailerLink} target="_blank" rel="noopener noreferrer">
-        <img className="movies-card__poster" src={`https://api.nomoreparties.co${movie.image.url}`} alt={movie.nameRU} />
+        <img className="movies-card__poster" src={location.pathname === '/movies' ? `https://api.nomoreparties.co${movie.image.url}` : movie.image} alt={movie.nameRU} />
       </a>
       <h3 className="movies-card__title">{movie.nameRU}</h3>
       <p className="movies-card__duration">{formatDuration(movie.duration)}</p>
       {location.pathname === '/movies' ? (
         <button className={`${isLiked ? 'movies-card__like-button' : 'movies-card__dislike-button'}`} onClick={handleLikeDislikeClick}></button>
       ) : (
-        <button className="movies-card__remove-button"></button>
+        <button className="movies-card__remove-button" onClick={handleRemoveFromSaved}></button>
       )}
     </li>
   );

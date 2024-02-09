@@ -111,7 +111,7 @@ function App() {
       .catch((error) => {
         console.error('Error fetching initial movies:', error);
       });
-  }, [],);
+  }, [location.pathname === '/movies', location.pathname === '/saved-movies'],);
   
   return (
     <div className="page">

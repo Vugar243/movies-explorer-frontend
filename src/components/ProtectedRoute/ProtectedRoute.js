@@ -24,7 +24,7 @@ const ProtectedRouteElement = ({ element: Component, ...props  }) => {
      isEditing={props.isEditing} 
     setIsEditing={props.setIsEditing}  /> 
     : 
-    <Navigate to="/signin" replace/>
+    <Navigate to="/" replace/>
 )}
 
 export default ProtectedRouteElement;

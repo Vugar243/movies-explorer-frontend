@@ -16,7 +16,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({ email: '', password: '', name: '', });
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [isNavigationPopupOpen, setIsNavigationPopupOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false); // Состояние для режима редактирования
   const [loading, setLoading] = useState(false);
@@ -38,19 +38,12 @@ function App() {
 
   const tokenCheck = () => {
     const jwt = localStorage.getItem('jwt');
-    if (jwt) {
       mainApi
         .checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            setIsAuthenticated(true);
-            navigate('/');
-          }
-        })
         .catch((error) => {
           console.error("Ошибка при проверке токена:", error);
+          setIsAuthenticated(false);
         });
-    }
   };
   useEffect(() => {
     if (location.pathname === '/profile') {
@@ -62,15 +55,16 @@ function App() {
         .catch((err) => console.error('Ошибка при загрузке данных пользователя:', err));
     }
   }, [location.pathname, setCurrentUser]);
-  
+  const [isProfileUpdated, setIsProfileUpdated] = useState('');
   function handleUpdateUser(e) {
     e.preventDefault();
     // Отправляем запрос на сервер для обновления профиля пользователя
     mainApi.updateUserInfo({ email: currentUser.email, name: currentUser.name })
       .then((newUser) => {
         setCurrentUser(newUser); // Обновляем стейт currentUser с новыми данными
-        localStorage.setItem('userInfo', JSON.stringify(newUser.name));
+        localStorage.setItem('userInfo', (newUser.name));
         setIsEditing(false);
+        setIsProfileUpdated('Профиль успешно обновлен!');
       })
       .catch((err) => {
         console.error('Ошибка при обновлении профиля:', err);
@@ -116,7 +110,6 @@ function App() {
       })
       .catch((error) => {
         console.error('Error fetching initial movies:', error);
-        setError(true);
       });
   }, [],);
   
@@ -185,6 +178,7 @@ function App() {
               handleUpdateUser={handleUpdateUser}
               isEditing={isEditing} 
               setIsEditing={setIsEditing}
+              isProfileUpdated={isProfileUpdated}
               />
           } 
           />

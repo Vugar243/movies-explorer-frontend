@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import './Register.css';
 import AuthForm from '../AuthForm/AuthForm';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
-import ValidationInput from '../ValidationInput/ValidationInput';
 
 const Register = ({ navigate, setCurrentUser, handleRegister }) => {
   const [isFormValid, setIsFormValid] = useState(false);
@@ -11,28 +10,42 @@ const Register = ({ navigate, setCurrentUser, handleRegister }) => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleNameChange = (value, error) => {
+  const handleNameChange = (value) => {
     setCurrentUser({ ...currentUser, name: value });
-    setNameError(error);
+
+    // Валидация имени
+    setNameError(value.length >= 2 ? '' : 'Имя должно содержать минимум 2 символа');
   };
 
-  const handleEmailChange = (value, error) => {
+  const handleEmailChange = (value) => {
     setCurrentUser({ ...currentUser, email: value });
-    setEmailError(error);
+
+    // Валидация email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmailError(emailPattern.test(value) ? '' : 'Введите корректный адрес электронной почты');
   };
 
-  const handlePasswordChange = (value, error) => {
+  const handlePasswordChange = (value) => {
     setCurrentUser({ ...currentUser, password: value });
-    setPasswordError(error);
+
+    // Валидация пароля
+    setPasswordError(value.length >= 2 ? '' : 'Пароль должен содержать минимум 2 символа');
   };
 
   useEffect(() => {
     // Проверка наличия ошибок в каждом поле
-    const hasErrors = !!nameError || !!emailError || !!passwordError;
+    const hasNameError = !!nameError;
+    const hasEmailError = !!emailError;
+    const hasPasswordError = !!passwordError;
 
-    // Обновление состояния формы в зависимости от наличия ошибок
-    setIsFormValid(!hasErrors);
-  }, [nameError, emailError, passwordError]);
+    // Проверка наличия значений в каждом поле
+    const hasNameValue = !!currentUser.name.trim();
+    const hasEmailValue = !!currentUser.email.trim();
+    const hasPasswordValue = !!currentUser.password.trim();
+
+    // Обновление состояния формы в зависимости от наличия ошибок и значений
+    setIsFormValid(!hasNameError && !hasEmailError && !hasPasswordError && hasNameValue && hasEmailValue && hasPasswordValue);
+  }, [nameError, emailError, passwordError, currentUser]);
 
   return (
     <main>
@@ -47,55 +60,63 @@ const Register = ({ navigate, setCurrentUser, handleRegister }) => {
         linkText="Войти"
         text="Уже зарегистрированы?"
       >
-        <ValidationInput
-          id="name"
-          label="Имя"
-          type="text"
-          placeholder="Имя"
-          required
-          minLength="2"
-          maxLength="40"
-          onChange={handleNameChange}
-          value={currentUser.name}
-          cssClass="auth-form__input"
-          cssClassError="auth-form__input-error"
-          error={nameError}
-        />
-
-        <ValidationInput
-          id="email"
-          label="E-mail"
-          type="email"
-          placeholder="Email"
-          required
-          minLength="2"
-          maxLength="40"
-          onChange={handleEmailChange}
-          value={currentUser.email}
-          cssClass="auth-form__input"
-          cssClassError="auth-form__input-error"
-          error={emailError}
-        />
-
-        <ValidationInput
-          id="password"
-          label="Пароль"
-          type="password"
-          placeholder="Пароль"
-          required
-          minLength="2"
-          maxLength="40"
-          onChange={handlePasswordChange}
-          value={currentUser.password}
-          cssClass="auth-form__input"
-          cssClassError="auth-form__input-error"
-          error={passwordError}
-        />
+        <div className="auth-form__input-wrapper">
+          <label className="auth-form__label" htmlFor="name">
+            Имя
+          </label>
+          <input
+            id="name"
+            type="text"
+            placeholder="Имя"
+            required
+            minLength="2"
+            maxLength="40"
+            onChange={(e) => handleNameChange(e.target.value)}
+            value={currentUser.name}
+            className="auth-form__input"
+          />
+          {nameError && <span className="auth-form__input-error">{nameError}</span>}
+        </div>
+        <div className="auth-form__input-wrapper">
+          <label className="auth-form__label" htmlFor="email">
+            E-mail
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="Email"
+            required
+            minLength="2"
+            maxLength="40"
+            onChange={(e) => handleEmailChange(e.target.value)}
+            value={currentUser.email}
+            className="auth-form__input"
+          />
+          {emailError && <span className="auth-form__input-error">{emailError}</span>}
+        </div>
+        <div className="auth-form__input-wrapper">
+          <label className="auth-form__label" htmlFor="password">
+            Пароль
+          </label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Пароль"
+            required
+            minLength="2"
+            maxLength="40"
+            onChange={(e) => handlePasswordChange(e.target.value)}
+            value={currentUser.password}
+            className="auth-form__input"
+          />
+          {passwordError && <span className="auth-form__input-error">{passwordError}</span>}
+        </div>
       </AuthForm>
     </main>
   );
 };
 
 export default Register;
+
 
 

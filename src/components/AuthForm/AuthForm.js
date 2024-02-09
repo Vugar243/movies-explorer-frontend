@@ -9,7 +9,7 @@ const AuthForm = ({ disabled, title, submitButtonText, onFormSubmit, link, child
       <h1 className="auth-form__title">{title}</h1>
       <form noValidate className="auth-form__form" onSubmit={onFormSubmit}>
         {children}
-        <button type="submit"disabled={disabled} className={submitButtonClass}>{submitButtonText}</button>
+        <button type="submit" disabled={disabled} className={submitButtonClass}>{submitButtonText}</button>
         <p className="auth-form__text">{text} <Link to={link} href="#" className="auth-form__link">{linkText}</Link></p>
       </form>
     </div>

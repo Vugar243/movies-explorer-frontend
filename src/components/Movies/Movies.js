@@ -6,11 +6,10 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Navigation from '../Navigation/Navigation';
-import { handleSearchMovies } from '../utils/moviesApiUtils';
-import mainApi from '../utils/MainApi';
-import ValidationInput from '../ValidationInput/ValidationInput';
+import moviesApi from '../utils/MoviesApi';
 
 const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoading, isAuthenticated, navigate, handleNavigationButtonClick, location, isNavigationPopupOpen, closeAllPopups }) => {
+  const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [shortMoviesOnly, setShortMoviesOnly] = useState(() => {
@@ -21,9 +20,19 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
   }); 
   const [cardsPerRow, setCardsPerRow] = useState(4);
   const [visibleCards, setVisibleCards] = useState(cardsPerRow);
-  const [loadMoreCards, setLoadMoreCards] = useState(2);  
+  const [loadMoreCards, setLoadMoreCards] = useState(2); 
+  const [searcError, setSearchError] = useState('');
+  const [isSearchPerformed, setIsSearchPerformed] = useState(false);
   useEffect(() => {
-    // Fetch initial movies when the component mounts
+    moviesApi.getInitialCards()
+        .then((data) => {
+          setMovies(data); 
+          setError(false);
+        })
+        .catch ((error) => {
+          console.error('Ошибка при загрузке начальных фильмов:', error);
+          setError(true);
+        })
 
     const storedSearchQuery = localStorage.getItem('searchQuery');
     const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
@@ -84,8 +93,26 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
   }
 
   const handleSearch = async () => {
-    await handleSearchMovies(saveLocalStorage, searchQuery, shortMoviesOnly, setLoading, setError, setFilteredMovies);
-  };
+    // Ручная валидация перед запросом на сервер
+    if (searchQuery.trim().length < 1) {
+      // Минимальная длина запроса - 2 символа
+      setSearchError('Нужно ввести ключевое слово');
+      return;
+    }
+    setIsSearchPerformed(true);
+    setSearchError('');
+    // Фильтрация фильмов
+    const filtered = movies.filter((movie) => {
+      const titleIncludesQuery = movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) || movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase());
+      const isShortMovie = shortMoviesOnly ? movie.duration <= 40 : true;
+  
+      return titleIncludesQuery && isShortMovie;
+    });
+
+    // Сохранение результатов поиска в localStorage
+    saveLocalStorage(filtered);
+    setFilteredMovies(filtered);
+  }
 
   useEffect(() => {
     // Получение сохраненного значения из localStorage
@@ -103,20 +130,13 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
       <Header isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} />
       <main>
         <SearchForm onSearch={handleSearch}>
-        <ValidationInput
+        <input
             id="searchQuery"
-            label="Фильм"
             type="text"
             placeholder="Фильм"
             value={searchQuery}
-            onChange={(value, error) => {
-              setSearchQuery(value);
-            }}
-            cssClass="search-form__input"
-            required
-            minLength="2"
-            error=""
-            cssClassError="search-form__input-error"
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-form__input"
           />
           <div className="search-form__divider"></div>
           <label className="search-form__label">
@@ -129,6 +149,7 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
             <span className="search-form__custom-checkbox"></span>
             Короткометражки
           </label>
+          {searcError && <span className="search-form__input-error">{searcError}</span>}
         </SearchForm>
         {loading ? (
           <Preloader />
@@ -138,7 +159,7 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
         {error ? (
           <p className="error">Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз</p>
         ) : (
-          filteredMovies.length === 0 && <p className="not-found-message">Ничего не найдено</p>
+          (isSearchPerformed && filteredMovies.length === 0) && <p className="not-found-message">Ничего не найдено</p>
         )}
         {/* Кнопка "Ещё" отображается, только если есть ещё карточки для загрузки */}
         {filteredMovies.length > visibleCards && (

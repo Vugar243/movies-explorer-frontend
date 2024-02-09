@@ -68,8 +68,9 @@
   width: 24px;
   height: 24px;
   cursor: pointer;
+  opacity: 0;
 }
-.movies-card__remove-button:hover {
+.movies-card:hover .movies-card__remove-button {
   opacity: 0.8;
 }
 .movies-card__duration {
@@ -107,5 +108,8 @@
     font-size: 13px;
     margin-top: 0;
     margin-bottom: 0;
+  }
+  .movies-card__remove-button {
+    opacity: 1;
   }
 }

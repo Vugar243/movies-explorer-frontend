@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import './Login.css';
 import AuthForm from '../AuthForm/AuthForm';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
-import ValidationInput from '../ValidationInput/ValidationInput';
 
 const Login = ({ navigate, handleLogin, setCurrentUser }) => {
   const [isFormValid, setIsFormValid] = useState(false);
@@ -10,21 +9,26 @@ const Login = ({ navigate, handleLogin, setCurrentUser }) => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const handleEmailChange = (value, error) => {
+  const handleEmailChange = (value) => {
     setCurrentUser({ ...currentUser, email: value });
-    setEmailError(error);
+
+    // Валидация email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmailError(emailPattern.test(value) ? '' : 'Введите корректный адрес электронной почты');
   };
 
-  const handlePasswordChange = (value, error) => {
+  const handlePasswordChange = (value) => {
     setCurrentUser({ ...currentUser, password: value });
-    setPasswordError(error);
+
+    // Валидация пароля
+    setPasswordError(value.length >= 2 ? '' : 'Пароль должен содержать минимум 2 символа');
   };
 
   useEffect(() => {
-    // Check for errors in each field
+    // Проверка наличия ошибок в каждом поле
     const hasErrors = !!emailError || !!passwordError;
 
-    // Update the form state based on error presence
+    // Обновление состояния формы на основе наличия ошибок
     setIsFormValid(!hasErrors);
   }, [emailError, passwordError]);
 
@@ -41,38 +45,45 @@ const Login = ({ navigate, handleLogin, setCurrentUser }) => {
         linkText="Регистрация"
         text="Ещё не зарегистрированы?"
       >
-        <ValidationInput
-          id="email"
-          label="E-mail"
-          type="email"
-          placeholder="Email"
-          required
-          minLength="2"
-          maxLength="40"
-          onChange={handleEmailChange}
-          value={currentUser.email}
-          cssClass="auth-form__input"
-          cssClassError="auth-form__input-error"
-          error={emailError}
-        />
+        <div className="auth-form__input-wrapper">
+          <label className="auth-form__label" htmlFor="email">
+            E-mail
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="Email"
+            required
+            minLength="2"
+            maxLength="40"
+            onChange={(e) => handleEmailChange(e.target.value)}
+            value={currentUser.email}
+            className="auth-form__input"
+          />
+          {emailError && <span className="auth-form__input-error">{emailError}</span>}
+        </div>
 
-        <ValidationInput
-          id="password"
-          label="Пароль"
-          type="password"
-          placeholder="Пароль"
-          required
-          minLength="2"
-          maxLength="40"
-          onChange={handlePasswordChange}
-          value={currentUser.password}
-          cssClass="auth-form__input"
-          cssClassError="auth-form__input-error"
-          error={passwordError}
-        />
+        <div className="auth-form__input-wrapper">
+          <label className="auth-form__label" htmlFor="password">
+            Пароль
+          </label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Пароль"
+            required
+            minLength="2"
+            maxLength="40"
+            onChange={(e) => handlePasswordChange(e.target.value)}
+            value={currentUser.password}
+            className="auth-form__input"
+          />
+          {passwordError && <span className="auth-form__input-error">{passwordError}</span>}
+        </div>
       </AuthForm>
     </main>
   );
 };
 
 export default Login;
+

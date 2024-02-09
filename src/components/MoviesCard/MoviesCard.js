@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './MoviesCard.css';
 import mainApi from '../utils/MainApi';
 
-const MoviesCard = ({ movie, location, saveMovies, setSaveMovies }) => {
+const MoviesCard = ({ movie, location, saveMovies, setSaveMovies,  }) => {
   const [isLiked, setIsLiked] = useState(false);
   useEffect(() => {
     const movieInSaved = saveMovies.find(savedMovie => savedMovie.movieId === movie.id);
@@ -42,8 +42,10 @@ const MoviesCard = ({ movie, location, saveMovies, setSaveMovies }) => {
       })
       .catch((error) => {
         console.error('Ошибка при удалении фильма из избранного:', error);
-      });
+      })
   }
+
+
   
   
   const formatDuration = (minutes) => {

@@ -17,25 +17,17 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
     const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
     // Возвращаем это значение как начальное значение
     return storedShortMoviesOnly;
-  }); 
-  const [cardsPerRow, setCardsPerRow] = useState(4);
+  });   
+  const [isFirstSearch, setIsFirstSearch] = useState(true);
+
+
+
+  const [cardsPerRow, setCardsPerRow] = useState(16);
   const [visibleCards, setVisibleCards] = useState(cardsPerRow);
-  const [loadMoreCards, setLoadMoreCards] = useState(2); 
+  const [loadMoreCards, setLoadMoreCards] = useState(4); 
   const [searcError, setSearchError] = useState('');
   const [isSearchPerformed, setIsSearchPerformed] = useState(false);
   useEffect(() => {
-    /*
-    moviesApi.getInitialCards()
-        .then((data) => {
-          setMovies(data); 
-          setError(false);
-        })
-        .catch ((error) => {
-          console.error('Ошибка при загрузке начальных фильмов:', error);
-          setError(true);
-        })
-        */
-
     const storedSearchQuery = localStorage.getItem('searchQuery');
     const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
     const storedMovies = JSON.parse(localStorage.getItem('movies'));
@@ -67,14 +59,13 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
   // Обновление количества видимых карточек в зависимости от ширины экрана
   const updateVisibleCards = () => {
     const screenWidth = window.innerWidth;
-
     if (screenWidth >= 1280) {
       setCardsPerRow(16);
       setLoadMoreCards(4);
-    } else if (screenWidth >= 768) {
+    } else if (screenWidth <= 768) {
       setCardsPerRow(8);
       setLoadMoreCards(2);
-    } else {
+    } else if (screenWidth <= 480) {
       setCardsPerRow(5);
       setLoadMoreCards(2);
     }
@@ -85,9 +76,12 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
   useEffect(() => {
     updateVisibleCards();
   }, [cardsPerRow]);
-  const handleLoadMore = () => {
-    setVisibleCards((prevVisibleCards) => prevVisibleCards + loadMoreCards);
-  };
+const handleLoadMore = () => {
+  setVisibleCards((prevVisibleCards) => prevVisibleCards + loadMoreCards);
+};
+
+
+
   const saveLocalStorage = (filtered) => {
     localStorage.setItem('searchQuery', searchQuery);
     localStorage.setItem('shortMoviesOnly', shortMoviesOnly);
@@ -95,7 +89,7 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
   }
 
 
-  const [isFirstSearch, setIsFirstSearch] = useState(true);
+
   
   const handleSearch = async () => {
     setLoading(true)
@@ -105,12 +99,9 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
       setSearchError('Нужно ввести ключевое слово');
       return;
     }
-  
     setIsSearchPerformed(true);
     setSearchError('');
-  
     let fetchedMovies; // Переменная для хранения загруженных фильмов
-  
     // Выполнять запрос к серверу только при первом поиске
     if (isFirstSearch) {
       try {
@@ -129,7 +120,6 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
       // Использовать уже загруженные фильмы, если первый поиск уже выполнен
       fetchedMovies = movies;
     }
-  
     // Фильтрация фильмов
     const filtered = fetchedMovies.filter((movie) => {
       const titleIncludesQuery = movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) || movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase());
@@ -137,10 +127,10 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
   
       return titleIncludesQuery && isShortMovie;
     });
-  
     // Сохранение результатов поиска в localStorage
     saveLocalStorage(filtered);
     setFilteredMovies(filtered);
+    updateVisibleCards(); ///////////////////////////////////////
     setLoading(false);
   };
   

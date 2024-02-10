@@ -88,17 +88,6 @@ class MainApi {
       .then(this._checkResponse)
   }
 
-
-
-
-
-
-
-
-
-
-
-
   getInitialMovies() {
     const token = localStorage.getItem('jwt');
     return fetch(`${this.baseUrl}/movies`, {
@@ -110,15 +99,6 @@ class MainApi {
       .then(this._checkResponse)
   }
 
-
-
-
-
-
-
-
-
-
   deleteMovielike(cardId) {
     const token = localStorage.getItem('jwt');
     return fetch(`${this.baseUrl}/movies/${cardId}`, {
@@ -126,22 +106,6 @@ class MainApi {
       headers: {
         authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
-      },
-    })
-      .then(this._checkResponse)
-  }
-
-
-
-
-
-
-  dislikeCard(cardId) {
-    const token = localStorage.getItem('jwt');
-    return fetch(`${this.baseUrl}/cards/${cardId}/likes/`, {
-      method: 'DELETE',
-      headers: {
-        authorization: `Bearer ${token}`
       },
     })
       .then(this._checkResponse)

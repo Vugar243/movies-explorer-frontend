@@ -24,6 +24,7 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
   const [searcError, setSearchError] = useState('');
   const [isSearchPerformed, setIsSearchPerformed] = useState(false);
   useEffect(() => {
+    /*
     moviesApi.getInitialCards()
         .then((data) => {
           setMovies(data); 
@@ -33,6 +34,7 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
           console.error('Ошибка при загрузке начальных фильмов:', error);
           setError(true);
         })
+        */
 
     const storedSearchQuery = localStorage.getItem('searchQuery');
     const storedShortMoviesOnly = localStorage.getItem('shortMoviesOnly') === 'true';
@@ -92,27 +94,58 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
     localStorage.setItem('movies', JSON.stringify(filtered));
   }
 
+
+  const [isFirstSearch, setIsFirstSearch] = useState(true);
+  
   const handleSearch = async () => {
+    setLoading(true)
     // Ручная валидация перед запросом на сервер
     if (searchQuery.trim().length < 1) {
       // Минимальная длина запроса - 2 символа
       setSearchError('Нужно ввести ключевое слово');
       return;
     }
+  
     setIsSearchPerformed(true);
     setSearchError('');
+  
+    let fetchedMovies; // Переменная для хранения загруженных фильмов
+  
+    // Выполнять запрос к серверу только при первом поиске
+    if (isFirstSearch) {
+      try {
+        fetchedMovies = await moviesApi.getInitialCards();
+        setMovies(fetchedMovies);
+        setError(false);
+        setLoading(false);
+      } catch (error) {
+        console.error('Ошибка при загрузке начальных фильмов:', error);
+        setError(true);
+        return;
+      } finally {
+        setIsFirstSearch(false);
+      }
+    } else {
+      // Использовать уже загруженные фильмы, если первый поиск уже выполнен
+      fetchedMovies = movies;
+    }
+  
     // Фильтрация фильмов
-    const filtered = movies.filter((movie) => {
+    const filtered = fetchedMovies.filter((movie) => {
       const titleIncludesQuery = movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase()) || movie.nameEN.toLowerCase().includes(searchQuery.toLowerCase());
       const isShortMovie = shortMoviesOnly ? movie.duration <= 40 : true;
   
       return titleIncludesQuery && isShortMovie;
     });
-
+  
     // Сохранение результатов поиска в localStorage
     saveLocalStorage(filtered);
     setFilteredMovies(filtered);
-  }
+    setLoading(false);
+  };
+  
+  
+        
 
   useEffect(() => {
     // Получение сохраненного значения из localStorage

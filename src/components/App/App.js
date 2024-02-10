@@ -21,7 +21,7 @@ function App() {
   const [isEditing, setIsEditing] = useState(false); // Состояние для режима редактирования
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-
+  const [isProfileUpdated, setIsProfileUpdated] = useState('');
 
   const location = useLocation();
 
@@ -50,24 +50,30 @@ function App() {
       mainApi.getUserInfo()
         .then((userInfo) => {
           setCurrentUser(userInfo);
-          localStorage.setItem('userInfo', userInfo.name); // Записываем в локальное хранилище
+          localStorage.setItem('nameInfo', userInfo.name); // Записываем в локальное хранилище
+          localStorage.setItem('emailInfo', userInfo.email);
+          setIsProfileUpdated('');
         })
         .catch((err) => console.error('Ошибка при загрузке данных пользователя:', err));
+          setIsProfileUpdated('Ошибка при загрузке данных пользователя');
     }
-  }, [location.pathname, setCurrentUser]);
-  const [isProfileUpdated, setIsProfileUpdated] = useState('');
+  }, [location.pathname === '/profile', setCurrentUser]);
+
   function handleUpdateUser(e) {
     e.preventDefault();
+    setIsEditing(false);
     // Отправляем запрос на сервер для обновления профиля пользователя
     mainApi.updateUserInfo({ email: currentUser.email, name: currentUser.name })
       .then((newUser) => {
         setCurrentUser(newUser); // Обновляем стейт currentUser с новыми данными
-        localStorage.setItem('userInfo', (newUser.name));
-        setIsEditing(false);
+        localStorage.setItem('nameInfo', (newUser.name));
+        localStorage.setItem('emailInfo', (newUser.email));
         setIsProfileUpdated('Профиль успешно обновлен!');
       })
       .catch((err) => {
         console.error('Ошибка при обновлении профиля:', err);
+        setIsProfileUpdated('Ошибка при обновлении профиля');
+        setIsEditing(true);
       });
   }
   const handleLogin = (e) => {

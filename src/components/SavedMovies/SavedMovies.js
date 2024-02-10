@@ -7,7 +7,6 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Navigation from '../Navigation/Navigation';
-import ValidationInput from '../ValidationInput/ValidationInput';
 
 const SavedMovies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoading, isAuthenticated, navigate, handleNavigationButtonClick, location, isNavigationPopupOpen, closeAllPopups }) => {
   const [saveSearchQuery, setSaveSearchQuery] = useState('');

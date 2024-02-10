@@ -22,12 +22,6 @@ const Profile = ({
   const [nameError, setNameError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
-  useEffect(() => {
-    // Проверяем, изменились ли данные профиля
-    const isNameChanged = currentUser.name !== currentUser.originalName;
-    const isEmailChanged = currentUser.email !== currentUser.originalEmail;
-    setIsFormValid(isNameChanged || isEmailChanged);
-  }, [currentUser]);
 
 
   const handleEditClick = () => {
@@ -38,14 +32,16 @@ const Profile = ({
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('jwt');
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem('nameInfo');
+    localStorage.removeItem('emailInfo');
     localStorage.removeItem('searchQuery');
     localStorage.removeItem('shortMoviesOnly');
     localStorage.removeItem('movies');
     navigate('/'); // Перенаправляем пользователя на главную страницу
   };
 
-  let storedUserInfo = localStorage.getItem('userInfo');
+  let storedNameInfo = localStorage.getItem('nameInfo');
+  let storedEmailInfo = localStorage.getItem('emailInfo');
 
   const handleUpdateUserValidation = (e) => {
     // Валидация перед отправкой формы
@@ -76,7 +72,7 @@ const Profile = ({
       />
       <main>
         <form noValidate className="profile-form" onSubmit={handleUpdateUserValidation}>
-          <h1 className="profile-form__title">Привет, {storedUserInfo}!</h1>
+          <h1 className="profile-form__title">Привет, {storedNameInfo}!</h1>
           <div className="profile-form__input-wrapper">
             <label className="profile-form__label" htmlFor="input-name">
               Имя
@@ -92,6 +88,7 @@ const Profile = ({
                 setCurrentUser({ ...currentUser, name: e.target.value });
                 setNameError(e.target.value.length >= 2 ? '' : 'Имя должно содержать минимум 2 символа');
                 setIsFormValid(e.target.value.length >= 2 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentUser.email));
+                setIsFormValid(e.target.value !== storedNameInfo);
               }}
               value={currentUser.name}
               className="profile-form__input"
@@ -114,6 +111,7 @@ const Profile = ({
                 setCurrentUser({ ...currentUser, email: e.target.value });
                 setEmailError(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value) ? '' : 'Введите корректный адрес электронной почты');
                 setIsFormValid(currentUser.name.length >= 2 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value));
+                setIsFormValid(e.target.value !== storedEmailInfo);
               }}
               value={currentUser.email}
               className="profile-form__input"

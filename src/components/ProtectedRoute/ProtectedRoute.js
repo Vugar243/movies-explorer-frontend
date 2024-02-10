@@ -22,7 +22,9 @@ const ProtectedRouteElement = ({ element: Component, ...props  }) => {
      setCurrentUser={props.setCurrentUser} 
      handleUpdateUser={props.handleUpdateUser} 
      isEditing={props.isEditing} 
-    setIsEditing={props.setIsEditing}  /> 
+    setIsEditing={props.setIsEditing}  
+    isProfileUpdated={props.isProfileUpdated}
+    /> 
     : 
     <Navigate to="/" replace/>
 )}

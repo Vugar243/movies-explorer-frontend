@@ -3,7 +3,7 @@ import './Register.css';
 import AuthForm from '../AuthForm/AuthForm';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
-const Register = ({ navigate, setCurrentUser, handleRegister }) => {
+const Register = ({ navigate, setCurrentUser, handleRegister, registerError }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const currentUser = useContext(CurrentUserContext);
   const [nameError, setNameError] = useState('');
@@ -111,6 +111,7 @@ const Register = ({ navigate, setCurrentUser, handleRegister }) => {
           />
           {passwordError && <span className="auth-form__input-error">{passwordError}</span>}
         </div>
+        {registerError && <span className="search-form__isprofile-updated">{registerError}</span>}
       </AuthForm>
     </main>
   );

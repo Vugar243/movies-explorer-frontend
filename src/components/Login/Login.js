@@ -3,7 +3,7 @@ import './Login.css';
 import AuthForm from '../AuthForm/AuthForm';
 import CurrentUserContext from '../Contexts/CurrentUserContext';
 
-const Login = ({ navigate, handleLogin, setCurrentUser }) => {
+const Login = ({ navigate, handleLogin, setCurrentUser, loginError }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const currentUser = useContext(CurrentUserContext);
   const [emailError, setEmailError] = useState('');
@@ -80,6 +80,7 @@ const Login = ({ navigate, handleLogin, setCurrentUser }) => {
           />
           {passwordError && <span className="auth-form__input-error">{passwordError}</span>}
         </div>
+        {loginError && <span className="search-form__isprofile-updated">{loginError}</span>}
       </AuthForm>
     </main>
   );

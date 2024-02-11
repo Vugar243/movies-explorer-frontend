@@ -22,7 +22,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isProfileUpdated, setIsProfileUpdated] = useState('');
-
+  const [loginError, setLoginError] = useState('');
+  const [registerError, setRegisterError] = useState('');
   const location = useLocation();
 
   const handleNavigationButtonClick = () => {
@@ -45,6 +46,11 @@ function App() {
           setIsAuthenticated(false);
         });
   };
+  useEffect(() => {
+    if (isAuthenticated && (location.pathname === '/signin' || location.pathname === '/signup')) {
+      navigate('/'); // Перенаправляем авторизованного пользователя с /signin и /signup на другую страницу
+    }
+  }, [isAuthenticated, location.pathname, navigate]);
   useEffect(() => {
     if (location.pathname === '/profile') {
       mainApi.getUserInfo()
@@ -78,6 +84,7 @@ function App() {
   }
   const handleLogin = (e) => {
     e.preventDefault();
+    setLoginError('')
     mainApi
       .login({ email: currentUser.email, password: currentUser.password })
       .then((data) => {
@@ -92,6 +99,8 @@ function App() {
       })
       .catch((error) => {
         console.error("Ошибка при входе:", error);
+        setLoginError('Ошибка при входе')
+        setRegisterError('Ошибка при регистрации')
         // Обработка ошибок входа, например, вывод сообщения об ошибке пользователю
       });
   };
@@ -99,6 +108,7 @@ function App() {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    setRegisterError('')
     mainApi
       .register({ email: currentUser.email, password: currentUser.password, name: currentUser.name })
       .then(() => {
@@ -106,6 +116,7 @@ function App() {
       })
       .catch((error) => {
         console.error("Ошибка при регистрации:", error);
+        setRegisterError('Ошибка при регистрации')
       });
   };
   const [saveMovies, setSaveMovies] = useState([]);
@@ -118,13 +129,13 @@ function App() {
         console.error('Error fetching initial movies:', error);
       });
   }, [location.pathname === '/movies', location.pathname === '/saved-movies'],);
-  
+
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}> 
         <Routes>
-          <Route path="/signin" element={<Login navigate={navigate} setIsAuthenticated={setIsAuthenticated} setCurrentUser={setCurrentUser} handleLogin={handleLogin} />} />
-          <Route path="/signup" element={<Register navigate={navigate} setCurrentUser={setCurrentUser} handleRegister={handleRegister} />} />
+          <Route path="/signin" element={<Login loginError={loginError} navigate={navigate} setIsAuthenticated={setIsAuthenticated} setCurrentUser={setCurrentUser} handleLogin={handleLogin} />} />
+          <Route path="/signup" element={<Register registerError={registerError} navigate={navigate} setCurrentUser={setCurrentUser} handleRegister={handleRegister} />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/" element={<Main isAuthenticated={isAuthenticated} navigate={navigate} handleNavigationButtonClick={handleNavigationButtonClick} location={location} isNavigationPopupOpen={isNavigationPopupOpen} closeAllPopups={closeAllPopups}/>} />
           <Route path="/movies" 

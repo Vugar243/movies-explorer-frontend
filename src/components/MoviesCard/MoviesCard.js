@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './MoviesCard.css';
 import mainApi from '../utils/MainApi';
+import { formatDuration } from '../utils/config';
 
 const MoviesCard = ({ movie, location, saveMovies, setSaveMovies,  }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -44,19 +45,6 @@ const MoviesCard = ({ movie, location, saveMovies, setSaveMovies,  }) => {
         console.error('Ошибка при удалении фильма из избранного:', error);
       })
   }
-
-
-  
-  
-  const formatDuration = (minutes) => {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-
-  const formattedHours = hours > 0 ? `${hours}ч` : '';
-  const formattedMinutes = remainingMinutes > 0 ? `${remainingMinutes}м` : '';
-
-  return `${formattedHours} ${formattedMinutes}`;
-};
 
   return (
     <li className="movies-card">

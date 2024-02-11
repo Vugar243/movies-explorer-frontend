@@ -19,12 +19,6 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
     return storedShortMoviesOnly;
   });   
   const [isFirstSearch, setIsFirstSearch] = useState(true);
-
-
-
-  const [cardsPerRow, setCardsPerRow] = useState(16);
-  const [visibleCards, setVisibleCards] = useState(cardsPerRow);
-  const [loadMoreCards, setLoadMoreCards] = useState(4); 
   const [searcError, setSearchError] = useState('');
   const [isSearchPerformed, setIsSearchPerformed] = useState(false);
   useEffect(() => {
@@ -38,47 +32,57 @@ const Movies = ({ saveMovies, setSaveMovies, error, setError, loading, setLoadin
       setFilteredMovies(storedMovies);
     }
 
-  // Добавлен слушатель событий resize для отслеживания изменения размера экрана
+      // Добавлен слушатель событий resize для отслеживания изменения размера экрана
   const handleResize = () => {
     // Установка таймера для вызова функции через 300 миллисекунд после окончания изменений размера
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      updateVisibleCards();
-    }, 800);
-  };
-
-  let resizeTimer; // Переменная для хранения таймера
-
-  window.addEventListener('resize', handleResize);
-
-  return () => {
-    window.removeEventListener('resize', handleResize);
-  };
+    updateVisibleCards();
+    }, 300);
+    };
+    
+    let resizeTimer; // Переменная для хранения таймера
+    
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+    window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
-  // Обновление количества видимых карточек в зависимости от ширины экрана
+
+
+  const [visibleCards, setVisibleCards] = useState(0);
+  // Состояние для хранения количества подгружаемых карточек
+  const [loadMoreCards, setLoadMoreCards] = useState(0);
+  
+  // Функция для обновления количества видимых и подгружаемых карточек в зависимости от ширины экрана
   const updateVisibleCards = () => {
-    const screenWidth = window.innerWidth;
-    if (screenWidth >= 1280) {
-      setCardsPerRow(16);
-      setLoadMoreCards(4);
-    } else if (screenWidth <= 768) {
-      setCardsPerRow(8);
-      setLoadMoreCards(2);
-    } else if (screenWidth <= 480) {
-      setCardsPerRow(5);
-      setLoadMoreCards(2);
-    }
-
-    setVisibleCards(cardsPerRow);
+  const screenWidth = window.innerWidth;
+  if (screenWidth >= 990) {
+  setVisibleCards(16);
+  setLoadMoreCards(4);
+  } else if (screenWidth >= 768) {
+  setVisibleCards(8);
+  setLoadMoreCards(2);
+  } else if (screenWidth <= 767) {
+  setVisibleCards(5);
+  setLoadMoreCards(2);
+  }
   };
-
+  
+  // Хук для вызова функции обновления количества карточек при монтировании компонента
   useEffect(() => {
     updateVisibleCards();
-  }, [cardsPerRow]);
-const handleLoadMore = () => {
+  }, []);
+  
+
+  
+  // Функция для обработки нажатия на кнопку «Ещё»
+  const handleLoadMore = () => {
   setVisibleCards((prevVisibleCards) => prevVisibleCards + loadMoreCards);
-};
+  };
+
 
 
 
@@ -97,6 +101,7 @@ const handleLoadMore = () => {
     if (searchQuery.trim().length < 1) {
       // Минимальная длина запроса - 2 символа
       setSearchError('Нужно ввести ключевое слово');
+      setLoading(false);
       return;
     }
     setIsSearchPerformed(true);
@@ -109,6 +114,7 @@ const handleLoadMore = () => {
         setMovies(fetchedMovies);
         setError(false);
         setLoading(false);
+        updateVisibleCards();
       } catch (error) {
         console.error('Ошибка при загрузке начальных фильмов:', error);
         setError(true);

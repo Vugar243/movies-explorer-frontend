@@ -20,6 +20,7 @@
   border-bottom: 1px solid #E8E8E8;
   padding-bottom: 16px;
   margin-bottom: 17px;
+  position: relative;
 }
 .profile-form__input:focus {
   border-bottom: 1px solid #3456F3;; /* Изменяем стиль при фокусе */
@@ -91,6 +92,13 @@
   border: 0;
   cursor: pointer;
 }
+/* Добавляем стиль для неактивной кнопки */
+.profile-form__save-button:disabled {
+  background-color: rgba(248, 248, 248, 1); /* Цвет фона для неактивной кнопки */
+  color: rgba(0, 0, 0, 1); /* Цвет текста для неактивной кнопки */
+  cursor: none; /* Запрещаем изменение курсора для неактивной кнопки */
+}
+
 .profile-form__save-button:hover {
   opacity: 0.8;
 }
@@ -100,7 +108,26 @@
 .profile-form__exit-button:hover {
   opacity: 0.8;
 }
-
+.auth-form__error {
+  position: absolute;
+}
+.profile-form__input-error {
+  color: red;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: end;
+  outline: none;
+  padding: 0;
+  border: 0;
+  position: absolute;
+  top: 17px;
+}
+.search-form__isprofile-updated {
+  color: #3456F3;
+  margin-top: 25px;
+}
 
 
 
